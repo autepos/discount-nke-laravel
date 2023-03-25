@@ -1,0 +1,54 @@
+{
+    "name": "autepos/discount-nke-laravel",
+    "type": "library",
+    "description": "Laravel wrapper for autepos/discount",
+    "keywords": ["discount","autepos", "laravel"],
+    "license": "MIT",
+    "require": {
+        "php": "^8.0",
+        "laravel/framework": "^9.0||^10.0",
+        "autepos/discount": "dev-main"
+    },
+    "require-dev": {
+        "barryvdh/laravel-ide-helper": "^2.13",
+        "laravel/pint": "^1.5",
+        "mockery/mockery": "^1.5",
+        "orchestra/testbench": "^7.6"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Autepos\\DiscountNkeLaravel\\DiscountNkeLaravelServiceProvider"
+            ]
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Autepos\\DiscountNkeLaravel\\": "src/",
+            "Autepos\\DiscountNkeLaravel\\Database\\Factories\\": "database/factories/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Autepos\\DiscountNkeLaravel\\Tests\\": "tests/"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "scripts": {
+        "post-autoload-dump": [
+
+        ],
+        "post-root-package-install": [
+            
+        ],
+        "post-create-project-cmd": [
+
+        ],
+        "test":"php vendor/phpunit/phpunit/phpunit",
+        "testf":"php vendor/phpunit/phpunit/phpunit --filter"
+    }
+}
