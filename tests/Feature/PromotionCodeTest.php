@@ -32,7 +32,7 @@ class PromotionCodeTest extends TestCase
         $processor = $this->discountManager()->processor(LinearDiscountProcessor::PROCESSOR);
         $processor->addDiscountInstrument($promotionCode);
         $processor->addDiscountableDevice($order);
-        $processor->setOrderId($order->getDiscountableDeviceIdentifier());
+        $processor->setMeta(['order_id' => $order->getDiscountableDeviceIdentifier()]);
 
         return $processor;
     }
@@ -50,8 +50,8 @@ class PromotionCodeTest extends TestCase
     public function testDiscountCanBeRedeemed(): void
     {
         $processor = $this->prepareLinearDiscountProcessor();
-        $meta_key = 'test_key';
-        $meta_value = 'test_value';
+        $meta_key = 'order_id';
+        $meta_value = 'order_1';
         $processor->setMeta([$meta_key => $meta_value]);
         $discountLineList = $processor->calculate();
 
@@ -71,16 +71,12 @@ class PromotionCodeTest extends TestCase
         $expected = [
             'coupon_id' => $discountLineItem->getDiscountInstrument()->coupon->id,
             'promotion_code_id' => $discountLineItem->getDiscountInstrument()->getDiscountInstrumentIdentifier(),
-            'order_id' => $discountLineItem->getOrderId(),
             'discountable_device_id' => $discountLine->getDiscountableDevice()->getDiscountableDeviceIdentifier(),
             'discountable_device_type' => $discountLine->getDiscountableDevice()->getDiscountableDeviceType(),
             'discountable_device_line_id' => $discountLine->getDiscountableDeviceLine()->getDiscountableDeviceLineIdentifier(),
             'discountable_device_line_type' => $discountLine->getDiscountableDeviceLine()->getDiscountableDeviceLineType(),
             'discountable_id' => $discountLine->getDiscountableDeviceLine()->getDiscountable()->getDiscountableIdentifier(),
             'discountable_type' => $discountLine->getDiscountableDeviceLine()->getDiscountable()->getDiscountableType(),
-            'user_id' => $discountLineItem->getUserId(),
-            'admin_id' => $discountLineItem->getAdminId(),
-            'tenant_id' => $discountLineItem->getTenantId(),
             'unit_quantity' => $discountLineItem->getUnitQuantity(),
             'unit_quantity_group' => $discountLineItem->getUnitQuantityGroup(),
             'unit_quantity_group_number' => $discountLineItem->getUnitQuantityGroupNumber(),
@@ -199,7 +195,7 @@ class PromotionCodeTest extends TestCase
         $promotionCode->user_id = 2;
         $promotionCode->save();
 
-        $discountLineList = $processor->setUserId(1)->calculate();
+        $discountLineList = $processor->setMeta(['user_id' => 1])->calculate();
         $this->assertEquals(0, $discountLineList->count());
 
         // Now try with the correct user
@@ -208,7 +204,7 @@ class PromotionCodeTest extends TestCase
         $promotionCode->user_id = 1;
         $promotionCode->save();
 
-        $discountLineList = $processor->setUserId(1)->calculate();
+        $discountLineList = $processor->setMeta(['user_id' => 1])->calculate();
         $this->assertEquals(1, $discountLineList->count());
     }
 
@@ -223,7 +219,7 @@ class PromotionCodeTest extends TestCase
         $promotionCode->order_id = 2;
         $promotionCode->save();
 
-        $discountLineList = $processor->setOrderId(1)->calculate();
+        $discountLineList = $processor->setMeta(['order_id' => 1])->calculate();
         $this->assertEquals(0, $discountLineList->count());
 
         // Now try with the correct order
@@ -232,7 +228,7 @@ class PromotionCodeTest extends TestCase
         $promotionCode->order_id = 1;
         $promotionCode->save();
 
-        $discountLineList = $processor->setOrderId(1)->calculate();
+        $discountLineList = $processor->setMeta(['order_id' => 1])->calculate();
         $this->assertEquals(1, $discountLineList->count());
     }
 
@@ -247,7 +243,7 @@ class PromotionCodeTest extends TestCase
         $promotionCode->tenant_id = 2;
         $promotionCode->save();
 
-        $discountLineList = $processor->setTenantId(1)->calculate();
+        $discountLineList = $processor->setMeta(['tenant_id' => 1])->calculate();
         $this->assertEquals(0, $discountLineList->count());
 
         // Now try with the correct tenant
@@ -256,7 +252,7 @@ class PromotionCodeTest extends TestCase
         $promotionCode->tenant_id = 1;
         $promotionCode->save();
 
-        $discountLineList = $processor->setTenantId(1)->calculate();
+        $discountLineList = $processor->setMeta(['tenant_id' => 1])->calculate();
         $this->assertEquals(1, $discountLineList->count());
     }
 

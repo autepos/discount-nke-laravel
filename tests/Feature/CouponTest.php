@@ -33,7 +33,7 @@ class CouponTest extends TestCase
         $processor = $this->discountManager()->processor(LinearDiscountProcessor::PROCESSOR);
         $processor->addDiscountInstrument($promotionCode);
         $processor->addDiscountableDevice($discountableDevice);
-        $processor->setOrderId(1);
+        $processor->setMeta(['order_id' => 1]);
 
         return $processor;
     }

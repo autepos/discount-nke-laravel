@@ -18,10 +18,10 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('coupon_id');
             $table->unsignedBigInteger('promotion_code_id');
-            $table->unsignedBigInteger('order_id');
             $table->nullableMorphs('discountable_device', 'autepos_discountable_device');
             $table->nullableMorphs('discountable_device_line', 'autepos_discountable_device_line');
             $table->nullableMorphs('discountable', 'autepos_discountable'); //This is the product that is discounted
+            $table->string('order_id')->nullable();
             $table->string('user_id')->nullable();
             $table->string('admin_id')->nullable();
             $table->string('tenant_id')->nullable();

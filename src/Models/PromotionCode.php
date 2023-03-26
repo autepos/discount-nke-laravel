@@ -227,10 +227,7 @@ class PromotionCode extends Model implements DiscountInstrument
      */
     public function isRedeemable(
         int $count = 1,
-        int|string $user_id = null,
-        int|string $order_id = null,
-        string|int $admin_id = null,
-        string|int $tenant_id = null,
+        array $meta = [],
     ): bool {
         $general = (! $this->hasExpired()
             and $this->isActive()
@@ -241,6 +238,11 @@ class PromotionCode extends Model implements DiscountInstrument
         $for_user = true;
         $for_order = true;
         $for_tenant = true;
+
+        $user_id = $meta['user_id'] ?? null;
+        $order_id = $meta['order_id'] ?? null;
+        $admin_id = $meta['admin_id'] ?? null;
+        $tenant_id = $meta['tenant_id'] ?? null;
 
         // Check user whom this has been specifically given to
         if ($this->user_id) {
@@ -288,13 +290,19 @@ class PromotionCode extends Model implements DiscountInstrument
             $this->coupon->redeem();
         }
 
+        $meta = $discountLineItem->getMeta();
+        $user_id = $meta['user_id'] ?? null;
+        $order_id = $meta['order_id'] ?? null;
+        $admin_id = $meta['admin_id'] ?? null;
+        $tenant_id = $meta['tenant_id'] ?? $this->tenant_id;
+
         // Create the discount
         $discount = new Discount();
         $discount->start = Carbon::now();
-        $discount->order_id = $discountLineItem->getOrderId();
-        $discount->user_id = $discountLineItem->getUserId();
-        $discount->admin_id = $discountLineItem->getAdminId();
-        $discount->tenant_id = $discountLineItem->getTenantId() ?? $this->tenant_id;
+        $discount->order_id = $order_id;
+        $discount->user_id = $user_id;
+        $discount->admin_id = $admin_id;
+        $discount->tenant_id = $tenant_id;
         $discount->meta = $discountLineItem->getMeta();
         $discount->amount = $discountLineItem->getAmount();
 
@@ -302,11 +310,11 @@ class PromotionCode extends Model implements DiscountInstrument
         $discount->discountable_device_type = $discountLineItem->getDiscountLine()->getDiscountableDevice()->getDiscountableDeviceType();
 
         $discountableDeviceLine = $discountLineItem->getDiscountLine()->getDiscountableDeviceLine();
-        $discount->discountable_device_line_id = $discountableDeviceLine?->getDiscountableDeviceLineIdentifier(); //TODO nullsafe operator should not be required because the discountable device line should always be set.
-        $discount->discountable_device_line_type = $discountableDeviceLine?->getDiscountableDeviceLineType(); //TODO nullsafe operator should not be required because the discountable device line should always be set.
+        $discount->discountable_device_line_id = $discountableDeviceLine->getDiscountableDeviceLineIdentifier();
+        $discount->discountable_device_line_type = $discountableDeviceLine->getDiscountableDeviceLineType();
 
-        $discount->discountable_id = $discountableDeviceLine?->getDiscountable()->getDiscountableIdentifier(); //TODO nullsafe operator should not be required because the discountable device line should always be set.
-        $discount->discountable_type = $discountableDeviceLine?->getDiscountable()->getDiscountableType(); //TODO nullsafe operator should not be required because the discountable device line should always be set.
+        $discount->discountable_id = $discountableDeviceLine->getDiscountable()->getDiscountableIdentifier();
+        $discount->discountable_type = $discountableDeviceLine->getDiscountable()->getDiscountableType();
 
         $discount->unit_quantity = $discountLineItem->getUnitQuantity();
         $discount->unit_quantity_group = $discountLineItem->getUnitQuantityGroup();
