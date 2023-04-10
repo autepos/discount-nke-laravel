@@ -7,6 +7,19 @@ use Autepos\DiscountNkeLaravel\Exceptions\NoCouponDiscountablePriceAccessExcepti
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * CouponDiscountable model.
+ * 
+ * @property int $id The model id.
+ * @property int $coupon_id The coupon id.
+ * @property int $discountable_id The discountable id.
+ * @property string $discountable_type The discountable type.
+ * @property \Illuminate\Support\Carbon $created_at The date and time the coupon discountable was created.
+ * @property \Illuminate\Support\Carbon $updated_at The date and time the coupon discountable was updated.
+ * @property-read \Autepos\DiscountNkeLaravel\Models\Coupon $coupon The coupon.
+ * @property-read \Autepos\Discount\Contracts\Discountable $discountable The discountable.
+ * 
+ */
 class CouponDiscountable extends Model implements Discountable
 {
     use HasFactory;

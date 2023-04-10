@@ -9,6 +9,33 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * PromotionCode model.
+ * Migration file that contains the model properties is:C:\projects\packages\autepos\discount-nke-laravel\database\migrations\2021_01_10_103914_create_promotion_code_table.php
+ * 
+ * @property int $id The model id.
+ * @property string $tenant_id The tenant id.
+ * @property string $admin_id The admin id.
+ * @property string $code The code.
+ * @property string $name The name.
+ * @property int $coupon_id The id of the coupon that the promotion code belongs to.
+ * @property string $user_id The user id.
+ * @property string $order_id The order id.
+ * @property Carbon $expires_at The date and time the promotion code expires.
+ * @property int $max_redemptions The max redemptions.
+ * @property int $restrictions_minimum_amount The minimum amount of a purchase to be eligible for the promotion code.
+ * @property int $times_redeemed The times redeemed.
+ * @property string $description The description.
+ * @property string $status The status.
+ * @property array|null $meta Additional meta data.
+ * @property Carbon $created_at The date and time the model was created.
+ * @property Carbon $updated_at The date and time the model was updated.
+ * @property Coupon $coupon The coupon that the promotion code belongs to.
+ * @property Discount[] $discounts The discounts made with the promotion code.
+ * 
+ * 
+ * 
+ */
 class PromotionCode extends Model implements DiscountInstrument
 {
     use HasFactory;
