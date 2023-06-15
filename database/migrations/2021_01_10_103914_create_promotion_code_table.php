@@ -17,6 +17,7 @@ return new class extends Migration
     {
         Schema::create((new PromotionCode())->getTable(), function (Blueprint $table) {
             $table->id();
+            $table->enum('type',PromotionCode::TYPES)->default(PromotionCode::TYPES['promo']);
             $table->string('tenant_id')->nullable();
             $table->string('admin_id')->nullable(); // the admin that created the promo code
 

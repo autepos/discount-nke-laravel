@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\DB;
  * Migration file that contains the model properties is:C:\projects\packages\autepos\discount-nke-laravel\database\migrations\2021_01_10_103914_create_promotion_code_table.php
  * 
  * @property int $id The model id.
+ * @property string $type The type of promotion code.
  * @property string $tenant_id The tenant id.
  * @property string $admin_id The admin id.
  * @property string $code The code.
@@ -39,6 +40,16 @@ use Illuminate\Support\Facades\DB;
 class PromotionCode extends Model implements DiscountInstrument
 {
     use HasFactory;
+
+    /**
+     * The Types of promotion codes.
+     * 
+     * @var array<string,string>
+     */
+    public const TYPES = [
+        'promo'=> 'promo',
+        'shipping_promo'=> 'shipping_promo',
+    ];
 
     /**
      * Status string for active
@@ -123,7 +134,7 @@ class PromotionCode extends Model implements DiscountInstrument
      */
     public function getDiscountInstrumentType(): string
     {
-        return 'promo';
+        return $this->type;
     }
 
     /**
