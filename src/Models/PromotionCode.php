@@ -42,13 +42,23 @@ class PromotionCode extends Model implements DiscountInstrument
     use HasFactory;
 
     /**
+     * Promo discount type.
+     */
+    public const TYPE_PROMO = 'promo';
+
+    /**
+     * Shipping promo discount type.
+     */
+    public const TYPE_SHIPPING_PROMO = 'shipping_promo';
+
+    /**
      * The Types of promotion codes.
      * 
      * @var array<string,string>
      */
     public const TYPES = [
-        'promo'=> 'promo',
-        'shipping_promo'=> 'shipping_promo',
+        self::TYPE_PROMO => 'Promo',
+        self::TYPE_SHIPPING_PROMO => 'Shipping Promo',
     ];
 
     /**
